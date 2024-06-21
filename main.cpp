@@ -1,6 +1,9 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
 
-#include "setting.hpp"
+#include "setting.h"
+#include "render.h"[
+#include "source.h"]
 
 int main()
 {
@@ -11,6 +14,10 @@ int main()
     );
     window.setVerticalSyncEnabled(true);
     window.setFramerateLimit(render::fps);
+    window.setActive(false);
+
+    sf::Thread renderThread(render::renderThread, &window);
+    renderThread.launch();
     
     while (window.isOpen())
     {
