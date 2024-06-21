@@ -4,8 +4,7 @@
 
 namespace source
 {
-    sf::Sprite& getBg();
-    sf::Sprite& getCover();
+    extern sf::Sprite bg, cover, logo;
 
     void loadSource();
 };

@@ -37,12 +37,12 @@ Area::Area(float x, float y, float w, float h)
     );
 }
 
-sf::Vector2f Area::getPos(sf::Vector2f pos)
+const sf::Vector2f Area::getPos(sf::Vector2f pos)
 {
     return { this->x1 + pos.x, this->y1 + pos.y };
 }
 
-sf::FloatRect Area::getOverlap(sf::FloatRect rect)
+const sf::FloatRect Area::getOverlap(sf::FloatRect rect)
 {
     float right = __getLowerRight(rect).x;
     float bottom = __getLowerRight(rect).y;

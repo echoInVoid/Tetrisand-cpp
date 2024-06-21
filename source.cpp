@@ -5,24 +5,16 @@
 
 namespace source
 {
-    sf::Sprite bg, cover;
-    sf::Texture bgTexture, coverTexture;
+    sf::Sprite bg, cover, logo;
+    sf::Texture bgTexture, coverTexture, logoTexture;
 
     void loadSource()
     {
         bgTexture.loadFromFile("./src/bg.png");
         coverTexture.loadFromFile("./src/cover.png");
+        logoTexture.loadFromFile("./src/logo.png");
         bg.setTexture(bgTexture);
         cover.setTexture(coverTexture);
-    }
-
-    sf::Sprite& getBg()
-    {
-        return bg;
-    }
-
-    sf::Sprite& getCover()
-    {
-        return cover;
+        logo.setTexture(logoTexture);
     }
 }
