@@ -2,8 +2,8 @@
 #include <SFML/System.hpp>
 
 #include "setting.h"
-#include "render.h"[
-#include "source.h"]
+#include "render.h"
+#include "source.h"
 
 int main()
 {
