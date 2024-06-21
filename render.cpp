@@ -2,6 +2,7 @@
 
 #include "render.h"
 #include "source.h"
+#include "setting.h"
 
 namespace render
 {
@@ -21,6 +22,7 @@ namespace render
 
     void renderThread(sf::RenderWindow* window)
     {
+        window->setFramerateLimit(render::fps);
         window->setActive(true);
         source::loadSource();
 

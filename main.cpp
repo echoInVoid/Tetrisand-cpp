@@ -12,8 +12,6 @@ int main()
         "Tetrisand",
         sf::Style::Titlebar | sf::Style::Close
     );
-    window.setVerticalSyncEnabled(true);
-    window.setFramerateLimit(render::fps);
     window.setActive(false);
 
     sf::Thread renderThread(render::renderThread, &window);
