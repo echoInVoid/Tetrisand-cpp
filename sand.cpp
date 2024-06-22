@@ -11,17 +11,17 @@ namespace sand
         this->renderShape.setFillColor(color);
     }
 
-    bool Sand::operator==(Sand s)
+    bool operator==(const Sand& s1, const Sand& s2)
     {
-        return this->type == s.type;
+        return s1.type == s2.type;
     }
 
-    bool Sand::operator!=(Sand s)
+    bool operator!=(const Sand& s1, const Sand& s2)
     {
-        return !(*this == s);
+        return !(s1 == s2);
     }
 
-    bool updatableSand(Sand& s)
+    bool updatableSand(const Sand& s)
     {
         return s != constants::VOID && s != constants::REMOVING;
     }

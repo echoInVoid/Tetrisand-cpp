@@ -5,6 +5,7 @@
 #include "render.h"
 #include "source.h"
 #include "sandData.h"
+#include "update.h"
 
 int main()
 {
@@ -19,6 +20,9 @@ int main()
 
     sf::Thread renderThread(render::renderThread, &window);
     renderThread.launch();
+
+    sf::Thread updateThread(update::updateThread, &window);
+    updateThread.launch();
     
     while (window.isOpen())
     {

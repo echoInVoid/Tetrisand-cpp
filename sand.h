@@ -14,9 +14,6 @@ namespace sand
 
         Sand() = default;
         Sand(int t, sf::Color c);
-
-        bool operator==(Sand s);
-        bool operator!=(Sand s);
     };
 
     namespace constants
@@ -26,5 +23,7 @@ namespace sand
         extern const Sand* const DARK[4];
     }
 
-    bool updatableSand(Sand& sand);
+    bool operator==(const Sand& s1, const Sand& s2);
+    bool operator!=(const Sand& s1, const Sand& s2);
+    bool updatableSand(const Sand& sand);
 }
