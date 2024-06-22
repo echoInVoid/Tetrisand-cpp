@@ -25,8 +25,8 @@ Area::Area(sf::Vector2f pos, sf::Vector2f size)
 {
     this->x1 = pos.x;
     this->y1 = pos.y;
-    this->x2 = pos.x + size.x;
-    this->y2 = pos.y + size.y;
+    this->x2 = pos.x + size.x - 1;
+    this->y2 = pos.y + size.y - 1;
 }
 
 Area::Area(float x, float y, float w, float h)
@@ -35,6 +35,11 @@ Area::Area(float x, float y, float w, float h)
         { x, y },
         { w, h }
     );
+}
+
+sf::Vector2f Area::getSize()
+{
+    return __getSize({ x1, y1 }, { x2, y2 });
 }
 
 const sf::Vector2f Area::getPos(sf::Vector2f pos)
