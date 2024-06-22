@@ -42,9 +42,14 @@ sf::Vector2f Area::getSize()
     return __getSize({ x1, y1 }, { x2, y2 });
 }
 
-const sf::Vector2f Area::getPos(sf::Vector2f pos)
+const sf::Vector2f Area::getAbsPos(sf::Vector2f pos)
 {
     return { this->x1 + pos.x, this->y1 + pos.y };
+}
+
+const sf::Vector2f Area::getRelPos(sf::Vector2f pos)
+{
+    return { pos.x - this->x1, pos.y - this->y1 };
 }
 
 const sf::FloatRect Area::getOverlap(sf::FloatRect rect)

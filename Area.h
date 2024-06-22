@@ -18,7 +18,9 @@ public:
     sf::Vector2f getSize();
 
     // @brief 根据与矩形左上角的相对坐标计算绝对坐标
-    const sf::Vector2f getPos(sf::Vector2f pos);
+    const sf::Vector2f getAbsPos(sf::Vector2f pos);
+    // @brief 根据绝对坐标计算与矩形左上角的相对坐标
+    const sf::Vector2f getRelPos(sf::Vector2f pos);
     // @brief 计算给定矩形与本矩形的重叠部分
     const sf::FloatRect getOverlap(sf::FloatRect rect); 
 };

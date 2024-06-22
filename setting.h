@@ -20,3 +20,8 @@ namespace update
 {
     const int tps = 20;
 }
+
+namespace placement
+{
+    const int blockSize = 10; // 形状中的单个块的边长，以沙粒计
+}
