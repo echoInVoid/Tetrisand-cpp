@@ -10,6 +10,30 @@
 
 namespace render
 {
+    static void renderShapeHint(sf::RenderWindow* window)
+    {
+        shape::Shape& curShape = placement::curShape;
+        const int w = curShape.w * render::hintBlockSize;
+        const int h = curShape.h * render::hintBlockSize;
+        const float x = layout::shape.getSize().x / 2 - w / 2.0;
+        const float y = layout::shape.getSize().y / 2 - h / 2.0;
+
+        auto s = sf::RectangleShape({ render::hintBlockSize, render::hintBlockSize });
+        s.setFillColor(sf::Color(0xFFFFFFFF));
+        for (int i = 0; i < curShape.w; i++)
+            for (int j = 0; j < curShape.h; j++)
+                if (curShape.data[i][j])
+                {
+                    s.setPosition(
+                        layout::shape.getAbsPos({
+                            x + i * render::hintBlockSize,
+                            y + j * render::hintBlockSize
+                        })
+                    );
+                    window->draw(s);
+                }
+    }
+
     static void renderGhost(sf::RenderWindow* window)
     {
         shape::Shape& curShape = placement::curShape;
@@ -84,6 +108,7 @@ namespace render
             renderLogo(window);
             renderSand(window);
             renderGhost(window);
+            renderShapeHint(window);
             window->display();
         }
     }

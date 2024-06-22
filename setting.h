@@ -8,6 +8,7 @@ namespace render
     const int windowW = 600, windowH = 800;
     const int fps = 30;
     const int sandSize = 4; // 单颗沙粒渲染时的边长
+    const int hintBlockSize = 6 * sandSize; // 提示区方块的边长
 }
 
 namespace sand
