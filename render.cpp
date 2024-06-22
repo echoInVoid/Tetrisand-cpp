@@ -87,7 +87,7 @@ namespace render
         offset += 0.25;
         offset = offset > 25 ? offset - 25 : offset;
         window->draw(source::bg);
-        source::bg.setPosition({ -offset, -offset});
+        source::bg.setPosition({ -offset, -offset });
     }
 
     static void renderCover(sf::RenderWindow* window)

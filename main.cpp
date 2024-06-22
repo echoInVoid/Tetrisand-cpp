@@ -6,6 +6,7 @@
 #include "source.h"
 #include "sandData.h"
 #include "update.h"
+#include "status.h"
 
 int main()
 {
@@ -29,8 +30,18 @@ int main()
         sf::Event event;
         while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
+            switch (event.type)
+            {
+            case sf::Event::Closed:
                 window.close();
+                break;
+            case sf::Event::KeyPressed:
+                if (event.key.code == sf::Keyboard::Left)
+                    placement::curShape.leftRotate();
+                else if (event.key.code == sf::Keyboard::Right)
+                    placement::curShape.rightRotate();
+                break;
+            }
         }
     }
 

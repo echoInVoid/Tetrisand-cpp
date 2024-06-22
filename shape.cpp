@@ -13,20 +13,26 @@ namespace shape
 
     void Shape::rightRotate()
     {
-        vector<vector<bool>> tmp;
+        vector<vector<bool>> tmp(this->h);
+        for (int i = 0; i < this->h; i++)
+            tmp[i] = vector<bool>(this->w);
+
         for (int i = 0; i < this->w; i++)
             for (int j = 0; j < this->h; j++)
-                tmp[j][this->w - 1 - i] = this->data[i][j];
+                tmp[this->h - 1 - j][i] = this->data[i][j];
         std::swap(this->w, this->h);
         this->data = tmp;
     }
 
     void Shape::leftRotate()
     {
-        vector<vector<bool>> tmp;
+        vector<vector<bool>> tmp(this->h);
+        for (int i = 0; i < this->h; i++)
+            tmp[i] = vector<bool>(this->w);
+
         for (int i = 0; i < this->w; i++)
             for (int j = 0; j < this->h; j++)
-                tmp[this->h - 1 - j][i] = this->data[i][j];
+                tmp[j][this->w - 1 - i] = this->data[i][j];
         std::swap(this->w, this->h);
         this->data = tmp;
     }
