@@ -4,6 +4,7 @@
 #include "setting.h"
 #include "render.h"
 #include "source.h"
+#include "sandData.h"
 
 int main()
 {
@@ -13,6 +14,8 @@ int main()
         sf::Style::Titlebar | sf::Style::Close
     );
     window.setActive(false);
+
+    sand::initSandData();
 
     sf::Thread renderThread(render::renderThread, &window);
     renderThread.launch();

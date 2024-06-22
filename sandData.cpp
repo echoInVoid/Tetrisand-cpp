@@ -2,6 +2,7 @@
 
 #include "sandData.h"
 #include "setting.h"
+#include "sand.h"
 
 namespace sand
 {
@@ -20,7 +21,7 @@ namespace sand
     {
         for (int i = 0; i < sandListW; i++)
             for (int j = 0; j < sandListH; j++)
-                sands[i][j] = &VOID;
+                sands[i][j] = &constants::VOID;
     }
 
     inline bool validPos(int x, int y)

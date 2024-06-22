@@ -1,6 +1,7 @@
 #pragma once
 
 #include "layout.h"
+#include <algorithm>
 
 namespace render
 {
@@ -11,6 +12,6 @@ namespace render
 
 namespace sand
 {
-    const int sandListW = (int)layout::sand.getSize().x / render::sandSize;
-    const int sandListH = (int)layout::sand.getSize().y / render::sandSize;
+    const int sandListW = (int)round(layout::sand.getSize().x / render::sandSize);
+    const int sandListH = (int)round(layout::sand.getSize().y / render::sandSize);
 }

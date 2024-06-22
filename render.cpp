@@ -4,9 +4,22 @@
 #include "source.h"
 #include "setting.h"
 #include "layout.h"
+#include "sandData.h"
 
 namespace render
 {
+    static void renderSand(sf::RenderWindow* window)
+    {
+        for (int i = 0; i < sand::sandListW; i++)
+            for (int j = 0; j < sand::sandListH; j++)
+            {
+                sf::RectangleShape shape = sand::sands[i][j]->renderShape;
+                const sf::Vector2f pos = layout::sand.getPos({ (float)i * render::sandSize , (float)j * render::sandSize });
+                shape.setPosition(pos);
+                window->draw(shape);
+            }
+    }
+
     static void renderLogo(sf::RenderWindow* window)
     {
         const sf::Vector2f pos = layout::info.getPos({ 0,0 });
@@ -39,6 +52,7 @@ namespace render
             renderBackground(window);
             renderCover(window);
             renderLogo(window);
+            renderSand(window);
             window->display();
         }
     }
