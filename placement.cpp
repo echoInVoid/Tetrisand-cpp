@@ -11,6 +11,7 @@ namespace placement
 {
     shape::Shape curShape = shape::shapes[0];
     int curType = 0;
+    sf::Clock placeClock = sf::Clock();
 
     int getPlacementX(sf::RenderWindow* window)
     {
@@ -27,10 +28,32 @@ namespace placement
         return ghostX / render::sandSize;
     }
 
+    // 检查放置冷却是否完成
+    static bool checkCD()
+    {
+        return placeClock.getElapsedTime().asSeconds() >= placeCD;
+    }
+    
+    // 检查将要放置的沙子是否与已经存在的沙子重叠
+    static bool checkOverlapping(int placeX)
+    {
+        for (int i = placeX; i < placeX + blockSize * curShape.w; i++)
+            for (int j = 0; j < blockSize * curShape.h; j++)
+                if (curShape.data[(i - placeX) / blockSize][j / blockSize] && sand::updatableSand(*sand::sands[i][j]))
+                    return true;
+        return false;
+    }
+
     void placeSand(sf::RenderWindow* window)
     {
+        if (!checkCD())
+            return;
+
         int placeX = getPlacementX(window);
         sf::Lock lock(sand::sandsLock);
+
+        if (checkOverlapping(placeX))
+            return;
 
         for (int i = placeX; i < placeX + blockSize * curShape.w; i++)
             for (int j = 0; j < blockSize * curShape.h; j++)
@@ -41,5 +64,7 @@ namespace placement
                     else
                         sand::sands[i][j] = sand::constants::DARK[curType];
                 }
+
+        placeClock.restart();
     }
 }

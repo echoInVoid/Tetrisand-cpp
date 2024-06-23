@@ -25,4 +25,5 @@ namespace update
 namespace placement
 {
     const int blockSize = 10; // 形状中的单个块的边长，以沙粒计
+    const int placeCD = 1; // 放置CD，以秒计
 }

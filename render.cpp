@@ -42,7 +42,10 @@ namespace render
         int ghostX = placement::getPlacementX(window) * render::sandSize;
 
         sf::Color ghostC = sand::constants::LIGHT[placement::curType]->renderShape.getFillColor();
-        ghostC.a = 100;
+        ghostC.a = (int)std::min(
+            placement::placeClock.getElapsedTime().asSeconds() / placement::placeCD * 200,
+            200.0f
+        ); // 让提示虚影随cd恢复逐渐变得不透明
 
         auto s = sf::RectangleShape({ blockSize,  blockSize });
         s.setFillColor(ghostC);
