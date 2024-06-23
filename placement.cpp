@@ -7,12 +7,20 @@
 #include "shape.h"
 #include "setting.h"
 #include "sandData.h"
+#include "source.h"
 
 namespace placement
 {
     shape::Shape curShape = shape::shapes[0];
     int curType = 0;
+    int nextType = 0; // 下下个放置的颜色
     sf::Clock placeClock = sf::Clock();
+    bool placed = false;
+
+    float sinceLastPlacement()
+    {
+        return placeClock.getElapsedTime().asSeconds();
+    }
 
     int getPlacementX(sf::RenderWindow* window)
     {
@@ -45,12 +53,13 @@ namespace placement
         return false;
     }
 
-    static void nextPlacement()
+    void nextPlacement()
     {
         static std::default_random_engine e(time(NULL));
         static std::uniform_int_distribution<int> d1(0, 6), d2(0, 3);
         curShape = shape::shapes[d1(e)];
-        curType = d2(e);
+        curType = nextType;
+        nextType = d2(e);
         const int rotate = d2(e);
         for (int i = 0; i < rotate; i++)
             curShape.leftRotate();
@@ -79,5 +88,7 @@ namespace placement
 
         placeClock.restart();
         nextPlacement();
+        source::refreshHints();
+        placed = true;
     }
 }

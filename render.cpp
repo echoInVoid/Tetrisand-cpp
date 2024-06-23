@@ -1,6 +1,9 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <algorithm>
+#include <cmath>
+
+#include <iostream>
 
 #include "render.h"
 #include "source.h"
@@ -11,6 +14,60 @@
 
 namespace render
 {
+    static sf::IntRect getTextureRect(sf::Sprite& s, int y)
+    {
+        int top = std::max(-y, 0);
+        int bottom = std::min(-y + (int)layout::color.getSize().y, (int)s.getTexture()->getSize().y);
+        if (top >= bottom)
+            return sf::IntRect(0, 0, 0, 0);
+        return sf::IntRect(
+            0,
+            top,
+            s.getTexture()->getSize().x,
+            bottom - top
+        );
+    }
+
+    static void renderColorHint(sf::RenderWindow* window)
+    {
+        constexpr float PI = 3.1415926f;
+        static float hintY = -20.0f;
+
+        using namespace source::colorHint;
+        if (placement::sinceLastPlacement() <= 1 && placement::placed)
+        {
+            float moveSpeed = cos(placement::sinceLastPlacement() * PI) + 1.1f;
+            hintY -= 108.0f / render::fps * moveSpeed * 1.05;
+
+            prev.setTextureRect(getTextureRect(prev, hintY));
+            cur.setTextureRect(getTextureRect(cur, hintY + 108));
+            next.setTextureRect(getTextureRect(next, hintY + 108 + 108));
+
+            auto getY = [](float y) { return y < 0 ? 0 : y; };
+
+            prev.setPosition(layout::color.getAbsPos({ 0, getY(hintY) }));
+            cur.setPosition(layout::color.getAbsPos({ 0, getY(hintY + 108) }));
+            next.setPosition(layout::color.getAbsPos({ 0, getY(hintY + 108 + 108) }));
+
+            window->draw(next);
+            window->draw(cur);
+            window->draw(prev);
+        }
+        else
+        {
+            hintY = -20.0f;
+
+            cur.setTextureRect(sf::IntRect(0, 20, cur.getTexture()->getSize().x, cur.getTexture()->getSize().y - 20));
+            next.setTextureRect(sf::IntRect(0, 0, next.getTexture()->getSize().x, 20));
+
+            cur.setPosition(layout::color.getAbsPos({ 0, 0 }));
+            next.setPosition(layout::color.getAbsPos({ 0, 88 }));
+
+            window->draw(next);
+            window->draw(cur);
+        }
+    }
+
     static void renderShapeHint(sf::RenderWindow* window)
     {
         shape::Shape& curShape = placement::curShape;
@@ -43,7 +100,7 @@ namespace render
 
         sf::Color ghostC = sand::constants::LIGHT[placement::curType]->renderShape.getFillColor();
         ghostC.a = (int)std::min(
-            placement::placeClock.getElapsedTime().asSeconds() / placement::placeCD * 200,
+            placement::sinceLastPlacement() / placement::placeCD * 200,
             200.0f
         ); // 让提示虚影随cd恢复逐渐变得不透明
 
@@ -107,6 +164,7 @@ namespace render
             renderSand(window);
             renderGhost(window);
             renderShapeHint(window);
+            renderColorHint(window);
             window->display();
         }
     }
