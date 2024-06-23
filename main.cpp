@@ -6,7 +6,7 @@
 #include "source.h"
 #include "sandData.h"
 #include "update.h"
-#include "status.h"
+#include "placement.h"
 
 int main()
 {
@@ -41,6 +41,9 @@ int main()
                 else if (event.key.code == sf::Keyboard::Right)
                     placement::curShape.rightRotate();
                 break;
+            case sf::Event::MouseButtonPressed:
+                if (event.mouseButton.button == sf::Mouse::Left)
+                    placement::placeSand(&window);
             }
         }
     }

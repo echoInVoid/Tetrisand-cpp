@@ -5,7 +5,6 @@
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 #include <random>
-#include <ctime>
 
 using namespace sand;
 
@@ -13,6 +12,7 @@ namespace update
 {
     static void updateSand()
     {
+        sf::Lock lock(sandsLock);
         for (int y = sandListH - 2; y >= 0; y--)
             for (int x = 0; x < sandListW; x++)
             {

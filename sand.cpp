@@ -36,7 +36,7 @@ namespace sand
         const Sand GREEN1(2, sf::Color(0x5D8D28FF));
         const Sand GREEN2(2, sf::Color(0x466B1FFF));
         const Sand BLUE1(3, sf::Color(0x305995FF));
-        const Sand BLUE2(4, sf::Color(0x28497AFF));
+        const Sand BLUE2(3, sf::Color(0x28497AFF));
         const Sand REMOVING(4, sf::Color(0xFFFFFFFF));
 
         const Sand* const LIGHT[4] = { &RED1, &YELLOW1, &GREEN1, &BLUE1 };

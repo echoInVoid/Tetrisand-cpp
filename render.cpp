@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
 #include <algorithm>
 
 #include "render.h"
@@ -6,7 +7,7 @@
 #include "setting.h"
 #include "layout.h"
 #include "sandData.h"
-#include "status.h"
+#include "placement.h"
 
 namespace render
 {
@@ -38,14 +39,7 @@ namespace render
     {
         shape::Shape& curShape = placement::curShape;
         const int blockSize = placement::blockSize * render::sandSize;
-        const int ghostW = curShape.w * blockSize;
-
-        int ghostX = sf::Mouse().getPosition(*window).x;
-        ghostX = (int)round(layout::sand.getRelPos({ (float)ghostX, 0.0 }).x);
-        ghostX -= ghostW / 2;
-        ghostX = std::max(ghostX, 0);
-        ghostX = std::min(ghostX, (int)round(layout::sand.getSize().x) - ghostW + 1);
-        ghostX -= ghostX % render::sandSize;
+        int ghostX = placement::getPlacementX(window) * render::sandSize;
 
         sf::Color ghostC = sand::constants::LIGHT[placement::curType]->renderShape.getFillColor();
         ghostC.a = 100;
@@ -64,6 +58,7 @@ namespace render
 
     static void renderSand(sf::RenderWindow* window)
     {
+        sf::Lock lock(sand::sandsLock);
         for (int i = 0; i < sand::sandListW; i++)
             for (int j = 0; j < sand::sandListH; j++)
             {
