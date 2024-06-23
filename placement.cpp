@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <random>
+#include <ctime>
 
 #include "placement.h"
 #include "shape.h"
@@ -44,6 +45,17 @@ namespace placement
         return false;
     }
 
+    static void nextPlacement()
+    {
+        static std::default_random_engine e(time(NULL));
+        static std::uniform_int_distribution<int> d1(0, 6), d2(0, 3);
+        curShape = shape::shapes[d1(e)];
+        curType = d2(e);
+        const int rotate = d2(e);
+        for (int i = 0; i < rotate; i++)
+            curShape.leftRotate();
+    }
+
     void placeSand(sf::RenderWindow* window)
     {
         if (!checkCD())
@@ -66,5 +78,6 @@ namespace placement
                 }
 
         placeClock.restart();
+        nextPlacement();
     }
 }

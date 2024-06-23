@@ -16,8 +16,8 @@ namespace render
         shape::Shape& curShape = placement::curShape;
         const int w = curShape.w * render::hintBlockSize;
         const int h = curShape.h * render::hintBlockSize;
-        const float x = layout::shape.getSize().x / 2 - w / 2.0;
-        const float y = layout::shape.getSize().y / 2 - h / 2.0;
+        const float x = layout::shape.getSize().x / 2 - w / 2.0f;
+        const float y = layout::shape.getSize().y / 2 - h / 2.0f;
 
         auto s = sf::RectangleShape({ render::hintBlockSize, render::hintBlockSize });
         s.setFillColor(sf::Color(0xFFFFFFFF));

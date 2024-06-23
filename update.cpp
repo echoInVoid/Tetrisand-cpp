@@ -56,8 +56,8 @@ namespace update
 
             // tps¿ØÖÆ
             sf::Time elapsedTime = clock.restart();
-            if (elapsedTime < sf::seconds(1.0 / tps))
-                sf::sleep(sf::seconds(1.0 / tps) - elapsedTime);
+            if (elapsedTime < sf::seconds(1.0f / tps))
+                sf::sleep(sf::seconds(1.0f / tps) - elapsedTime);
         }
     }
 }
