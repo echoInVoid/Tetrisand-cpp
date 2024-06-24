@@ -15,6 +15,7 @@ namespace source
 
     sf::Sprite bg, cover, logo;
     sf::Texture bgTexture, coverTexture, logoTexture;
+    sf::Font renderFont;
 
     void refreshHints()
     {
@@ -32,6 +33,8 @@ namespace source
 
     void loadSource()
     {
+        renderFont.loadFromFile("./src/HighPixel.ttf");
+
         bgTexture.loadFromFile("./src/bg.png");
         coverTexture.loadFromFile("./src/cover.png");
         logoTexture.loadFromFile("./src/logo.png");

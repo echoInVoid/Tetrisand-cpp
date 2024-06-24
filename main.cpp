@@ -7,6 +7,7 @@
 #include "sandData.h"
 #include "update.h"
 #include "placement.h"
+#include "stat.h"
 
 int main()
 {
@@ -17,6 +18,7 @@ int main()
     );
     window.setActive(false);
 
+    statistics::loadHighScore();
     sand::initSandData();
 
     sf::Thread renderThread(render::renderThread, &window);
@@ -47,6 +49,8 @@ int main()
             }
         }
     }
+
+    statistics::saveHighScore();
 
     return 0;
 }

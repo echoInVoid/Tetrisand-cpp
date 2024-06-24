@@ -11,6 +11,7 @@ namespace source
     }
 
     extern sf::Sprite bg, cover, logo;
+    extern sf::Font renderFont;
 
     void refreshHints();
 

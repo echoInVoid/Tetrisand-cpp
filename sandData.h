@@ -13,5 +13,5 @@ namespace sand
     void initSandData();
     void reset();
 
-    inline bool validPos(int x, int y);
+    bool validPos(int x, int y);
 }

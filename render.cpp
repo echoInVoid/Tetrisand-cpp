@@ -2,8 +2,7 @@
 #include <SFML/System.hpp>
 #include <algorithm>
 #include <cmath>
-
-#include <iostream>
+#include <boost/format.hpp>
 
 #include "render.h"
 #include "source.h"
@@ -11,9 +10,31 @@
 #include "layout.h"
 #include "sandData.h"
 #include "placement.h"
+#include "stat.h"
 
 namespace render
 {
+    static void renderScore(sf::RenderWindow* window)
+    {
+        using boost::format;
+
+        sf::Text text;
+        text.setFont(source::renderFont);
+        text.setCharacterSize(40);
+        text.setFillColor(sf::Color::Black);
+
+        text.setString((format("%08d") % statistics::highScore).str());
+        const float textX = layout::info.getSize().x - text.getLocalBounds().width - 5;
+        const float textY = layout::info.getSize().y / 2 - text.getLocalBounds().height - 6;
+        sf::Vector2f pos = layout::info.getAbsPos({ textX, textY });
+        text.setPosition(pos);
+        window->draw(text);
+        pos.y += text.getLocalBounds().height + 8;
+        text.setString((format("%08d") % statistics::score).str());
+        text.setPosition(pos);
+        window->draw(text);
+    }
+
     static sf::IntRect getTextureRect(sf::Sprite& s, int y)
     {
         int top = std::max(-y, 0);
@@ -165,6 +186,7 @@ namespace render
             renderGhost(window);
             renderShapeHint(window);
             renderColorHint(window);
+            renderScore(window);
             window->display();
         }
     }

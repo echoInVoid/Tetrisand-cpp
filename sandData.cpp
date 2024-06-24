@@ -24,7 +24,7 @@ namespace sand
                 sands[i][j] = &constants::VOID;
     }
 
-    inline bool validPos(int x, int y)
+    bool validPos(int x, int y)
     {
         return x >= 0 && x < sandListW && y >= 0 && y < sandListH;
     }
