@@ -14,6 +14,70 @@
 
 namespace render
 {
+    static void renderHint(sf::RenderWindow* window)
+    {
+        sf::Text hint("Press any key to restart.", source::renderFont, 30U);
+        hint.setFillColor(sf::Color::Black);
+        hint.setOrigin({ hint.getLocalBounds().width / 2, hint.getLocalBounds().height / 2 });
+        hint.setPosition(windowW / 2.0f, windowH / 2.5f * 1.7f);
+        window->draw(hint);
+    }
+
+    static void renderFinalScore(sf::RenderWindow* window)
+    {
+        using boost::format;
+
+        const float x = windowW / 2.0f;
+        const float y = windowH / 2.5f;
+
+        sf::Text score(
+            (format("SCORE: %08d") % statistics::score).str(),
+            source::renderFont,
+            40U
+        );
+        score.setFillColor(sf::Color::Black);
+        score.setOrigin({ score.getLocalBounds().width / 2, score.getLocalBounds().height / 2 });
+        score.setPosition(x, y);
+        window->draw(score);
+
+        sf::Text highScore(
+            (format("HIGH:  %08d") % statistics::highScore).str(),
+            source::renderFont,
+            40U
+        );
+        highScore.setFillColor(sf::Color::Black);
+        highScore.setOrigin({ highScore.getLocalBounds().width / 2, highScore.getLocalBounds().height / 2 });
+        highScore.setPosition(x, y + highScore.getLocalBounds().height + 10);
+        window->draw(highScore);
+
+        if (statistics::score == statistics::highScore)
+        {
+            sf::Text newRecord("New Record!", source::renderFont, 40);
+            newRecord.setFillColor(sf::Color::Black);
+            newRecord.setPosition(
+                score.getGlobalBounds().left,
+                highScore.getGlobalBounds().top + highScore.getGlobalBounds().height + 5
+            );
+            window->draw(newRecord);
+        }
+    }
+
+    static void renderBanner(sf::RenderWindow* window)
+    {
+        sf::Text banner("Game Over", source::renderFont, 72U);
+        banner.setFillColor(sf::Color::Black);
+        banner.setOrigin({ banner.getLocalBounds().width / 2, banner.getLocalBounds().height / 2 });
+        banner.setPosition({ windowW / 2, windowH / 4 });
+        window->draw(banner);
+    }
+
+    static void renderFailScreen(sf::RenderWindow* window)
+    {
+        renderBanner(window);
+        renderFinalScore(window);
+        renderHint(window);
+    }
+
     static void renderFailLine(sf::RenderWindow* window)
     {
         sf::RectangleShape line({ layout::sand.getSize().x, render::sandSize });
@@ -188,14 +252,21 @@ namespace render
         while (window->isOpen())
         {
             renderBackground(window);
-            renderCover(window);
-            renderLogo(window);
-            renderSand(window);
-            renderGhost(window);
-            renderShapeHint(window);
-            renderColorHint(window);
-            renderScore(window);
-            renderFailLine(window);
+
+            if (!status::gameFailed)
+            {
+                renderCover(window);
+                renderLogo(window);
+                renderSand(window);
+                renderGhost(window);
+                renderShapeHint(window);
+                renderColorHint(window);
+                renderScore(window);
+                renderFailLine(window);
+            }
+            else
+                renderFailScreen(window);
+
             window->display();
         }
     }
