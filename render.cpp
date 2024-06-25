@@ -14,6 +14,14 @@
 
 namespace render
 {
+    static void renderFailLine(sf::RenderWindow* window)
+    {
+        sf::RectangleShape line({ layout::sand.getSize().x, render::sandSize });
+        line.setFillColor(sf::Color(0xBB0000FF));
+        line.setPosition(layout::sand.getAbsPos({ 0.0f, (float)sand::failLine * render::sandSize }));
+        window->draw(line);
+    }
+
     static void renderScore(sf::RenderWindow* window)
     {
         using boost::format;
@@ -187,6 +195,7 @@ namespace render
             renderShapeHint(window);
             renderColorHint(window);
             renderScore(window);
+            renderFailLine(window);
             window->display();
         }
     }

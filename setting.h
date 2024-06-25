@@ -15,6 +15,7 @@ namespace sand
 {
     const int sandListW = (int)round(layout::sand.getSize().x / render::sandSize);
     const int sandListH = (int)round(layout::sand.getSize().y / render::sandSize);
+    const int failLine = sandListH * 0.1;
 }
 
 namespace update
