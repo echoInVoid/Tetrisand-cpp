@@ -183,7 +183,12 @@ namespace update
             // tps¿ØÖÆ
             sf::Time elapsedTime = clock.restart();
             if (elapsedTime < sf::seconds(1.0f / tps))
+            {
+                status::tps = tps;
                 sf::sleep(sf::seconds(1.0f / tps) - elapsedTime);
+            }
+            else
+                status::tps = 1.0f / elapsedTime.asSeconds();
         }
     }
 }
