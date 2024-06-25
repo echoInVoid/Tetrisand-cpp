@@ -8,3 +8,8 @@ namespace statistics
     void updateScore(unsigned int delta);
     void saveHighScore();
 }
+
+namespace status
+{
+    extern bool gameFailed;
+}

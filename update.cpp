@@ -10,12 +10,24 @@
 #include <queue>
 #include <utility>
 
-#include <iostream>
-
 using namespace sand;
 
 namespace update
 {
+    // 判定失败
+    static bool failCheck()
+    {
+        for (int i=0; i<sandListW; i++)
+            for (int j = sandListH - 1; j >= failLine; j--)
+            {
+                if (!updatableSand(*sands[i][j])) // 只针对不会下落的沙子做失败检查
+                    break;
+                if (j == failLine)
+                    return true;
+            }
+        return false;
+    }
+
     // 从(x,y)开始搜索，把连片沙子在mark中标记为marker，返回该片沙子是否可以删除
     static bool BFSMark(int x, int y, int** mark, int marker)
     {
@@ -156,11 +168,16 @@ namespace update
 
         while (window->isOpen())
         {
-            updateSand();
-            if (markSand())
+            if (!status::gameFailed)
             {
-                sf::sleep(sf::seconds(0.5f));
-                statistics::updateScore(removeMarkedSand());
+                updateSand();
+                if (markSand())
+                {
+                    sf::sleep(sf::seconds(0.5f));
+                    statistics::updateScore(removeMarkedSand());
+                }
+                if (failCheck())
+                    status::gameFailed = true;
             }
 
             // tps控制

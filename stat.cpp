@@ -47,3 +47,8 @@ namespace statistics
 	}
 
 }
+
+namespace status
+{
+	bool gameFailed = false;
+}

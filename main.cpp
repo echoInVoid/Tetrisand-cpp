@@ -38,10 +38,21 @@ int main()
                 window.close();
                 break;
             case sf::Event::KeyPressed:
-                if (event.key.code == sf::Keyboard::Left)
-                    placement::curShape.leftRotate();
-                else if (event.key.code == sf::Keyboard::Right)
-                    placement::curShape.rightRotate();
+                if (!status::gameFailed)
+                {
+                    if (event.key.code == sf::Keyboard::Left)
+                        placement::curShape.leftRotate();
+                    else if (event.key.code == sf::Keyboard::Right)
+                        placement::curShape.rightRotate();
+                }
+                else
+                {
+                    sand::reset();
+                    statistics::saveHighScore();
+                    statistics::score = 0;
+                    source::refreshHints();
+                    status::gameFailed = false;
+                }
                 break;
             case sf::Event::MouseButtonPressed:
                 if (event.mouseButton.button == sf::Mouse::Left)
