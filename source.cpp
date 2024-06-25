@@ -23,8 +23,8 @@ namespace source
         using boost::format;
 
         prevT = curT;
-        curT.loadFromFile((format("./src/sand/%d.png") % placement::curType).str());
-        nextT.loadFromFile((format("./src/sand/%d.png") % placement::nextType).str());
+        curT.loadFromFile((format(".\\src\\sand\\%d.png") % placement::curType).str());
+        nextT.loadFromFile((format(".\\src\\sand\\%d.png") % placement::nextType).str());
 
         prev.setTexture(prevT, true);
         cur.setTexture(curT, true);
@@ -33,18 +33,18 @@ namespace source
 
     void loadSource()
     {
-        renderFont.loadFromFile("./src/HighPixel.ttf");
+        renderFont.loadFromFile(".\\src\\HighPixel.ttf");
 
-        bgTexture.loadFromFile("./src/bg.png");
-        coverTexture.loadFromFile("./src/cover.png");
-        logoTexture.loadFromFile("./src/logo.png");
+        bgTexture.loadFromFile(".\\src\\bg.png");
+        coverTexture.loadFromFile(".\\src\\cover.png");
+        logoTexture.loadFromFile(".\\src\\logo.png");
         bg.setTexture(bgTexture);
         cover.setTexture(coverTexture);
         logo.setTexture(logoTexture);
 
         using boost::format;
         using colorHint::curT;
-        curT.loadFromFile((format("./src/sand/%d.png") % placement::curType).str());
+        curT.loadFromFile((format(".\\src\\sand\\%d.png") % placement::curType).str());
         refreshHints();
     }
 }

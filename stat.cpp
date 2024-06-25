@@ -51,4 +51,5 @@ namespace statistics
 namespace status
 {
 	bool gameFailed = false;
+	float fps = 0.0f, tps = 0.0f;
 }

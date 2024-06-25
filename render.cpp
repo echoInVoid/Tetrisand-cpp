@@ -14,6 +14,21 @@
 
 namespace render
 {
+    static void renderFPS(sf::RenderWindow* window)
+    {
+        using boost::format;
+
+        sf::Text fps(
+            (format("FPS: %.1f TPS: %.1f") % status::fps % status::tps).str(),
+            source::renderFont,
+            15U
+        );
+        fps.setFillColor(sf::Color(0x222222FF));
+        fps.setOrigin({ 0.0f, fps.getLocalBounds().height });
+        fps.setPosition(10, windowH-10);
+        window->draw(fps);
+    }
+
     static void renderHint(sf::RenderWindow* window)
     {
         sf::Text hint("Press any key to restart.", source::renderFont, 30U);
@@ -245,6 +260,8 @@ namespace render
 
     void renderThread(sf::RenderWindow* window)
     {
+        sf::Clock clock; // ÓÃÓÚ¼à¿ØFPS
+
         window->setFramerateLimit(render::fps);
         window->setActive(true);
         source::loadSource();
@@ -252,6 +269,7 @@ namespace render
         while (window->isOpen())
         {
             renderBackground(window);
+            renderFPS(window);
 
             if (!status::gameFailed)
             {
@@ -268,6 +286,8 @@ namespace render
                 renderFailScreen(window);
 
             window->display();
+
+            status::fps = 1.0f / clock.restart().asSeconds();
         }
     }
 };

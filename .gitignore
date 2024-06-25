@@ -42,4 +42,4 @@
 *.aps
 
 # Game
-score.txt
+/score.txt

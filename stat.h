@@ -12,4 +12,5 @@ namespace statistics
 namespace status
 {
     extern bool gameFailed;
+    extern float fps, tps;
 }
