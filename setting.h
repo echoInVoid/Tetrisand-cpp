@@ -2,6 +2,7 @@
 
 #include "layout.h"
 #include <algorithm>
+#include <cmath>
 
 namespace render
 {

@@ -9,6 +9,7 @@
 #include <vector>
 #include <queue>
 #include <utility>
+#include <cstring>
 
 using namespace sand;
 
@@ -28,7 +29,10 @@ namespace update
         return false;
     }
 
-    // 从(x,y)开始搜索，把连片沙子在mark中标记为marker，返回该片沙子是否可以删除
+    // @brief 从(x,y)开始搜索，把连片沙子在mark中标记为marker
+    // @param x, y 从x,y开始搜索
+    // @param mark, marker 起始点所属联通块中的位置会被设为marker。该数组尺寸应与sand相同。
+    // @return 该片沙子是否可以删除
     static bool BFSMark(int x, int y, int** mark, int marker)
     {
         using namespace std;
@@ -63,7 +67,10 @@ namespace update
         return res;
     }
 
-    // 将被标记的可移除沙子替换为REMOVING
+    // @brief 将被标记的可移除沙子替换为REMOVING
+    // @param removing 需要移除的联通块标号
+    // @param mark 联通块标记数组
+    // @param maxMarker 联通块标号的最大值
     static void replaceMarkedSand(std::vector<int> removing, int** mark, int maxMarker)
     {
         bool* tmp = new bool[maxMarker + 1];
@@ -79,7 +86,8 @@ namespace update
         delete[] tmp;
     }
 
-    // 将可以被移除的沙子替换为REMOVING，返回是否有沙子被替换
+    // @brief 将可以被移除的沙子替换为REMOVING
+    // @return 是否有沙子被替换
     static bool markSand()
     {
         static int** mark = new int*[sandListW];
@@ -110,7 +118,8 @@ namespace update
         return true;
     }
 
-    // 移除REMOVING，返回被移除的沙子数
+    // @brief 移除sand中的所有REMOVING
+    // @return 被移除的沙子数
     static int removeMarkedSand()
     {
         int cnt = 0;
@@ -126,6 +135,7 @@ namespace update
         return cnt;
     }
 
+    // @brief 让沙子下落
     static void updateSand()
     {
         sf::Lock lock(sandsLock);
