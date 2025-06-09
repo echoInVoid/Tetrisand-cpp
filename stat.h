@@ -13,11 +13,12 @@ namespace status
 {
 	enum GameStat
 	{
-		START,   // 开始界面
+		START,   // 开始界面（尚待实现）
 		IN_GAME, // 游戏中
 		FAILED   // 失败界面
 	};
 
+	// 关于游戏模式的内容尚待实现
 	enum GameMode
 	{
 		INFINITE, // 无限模式
