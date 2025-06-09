@@ -54,14 +54,14 @@ namespace update
             if (i == sandListW - 1)
                 res = true;
 
-            auto f = [&](int _i, int _j) {
+            auto pushPos = [&](int _i, int _j) {
                 if (validPos(_i, _j) && *sands[_i][_j] == *sands[i][j])
                     q.push(make_pair(_i, _j));
             };
-            f(i + 1, j);
-            f(i - 1, j);
-            f(i, j + 1);
-            f(i, j - 1);
+            pushPos(i + 1, j);
+            pushPos(i - 1, j);
+            pushPos(i, j + 1);
+            pushPos(i, j - 1);
         }
 
         return res;
@@ -178,7 +178,7 @@ namespace update
 
         while (window->isOpen())
         {
-            if (!status::gameFailed)
+            if (status::curStatus == status::IN_GAME)
             {
                 updateSand();
                 if (markSand())
@@ -187,7 +187,7 @@ namespace update
                     statistics::updateScore(removeMarkedSand());
                 }
                 if (failCheck())
-                    status::gameFailed = true;
+                    status::curStatus = status::FAILED;
             }
 
             // tps¿ØÖÆ

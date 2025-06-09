@@ -20,6 +20,7 @@ int main()
 
     statistics::loadHighScore();
     sand::initSandData();
+    status::curStatus = status::IN_GAME;
 
     sf::Thread renderThread(render::renderThread, &window);
     renderThread.launch();
@@ -38,7 +39,7 @@ int main()
                 window.close();
                 break;
             case sf::Event::KeyPressed:
-                if (!status::gameFailed)
+                if (status::curStatus == status::IN_GAME)
                 {
                     if (event.key.code == sf::Keyboard::Left)
                         placement::curShape.leftRotate();
@@ -51,7 +52,7 @@ int main()
                     statistics::saveHighScore();
                     statistics::score = 0;
                     source::refreshHints();
-                    status::gameFailed = false;
+                    status::curStatus = status::IN_GAME;
                 }
                 break;
             case sf::Event::MouseButtonPressed:

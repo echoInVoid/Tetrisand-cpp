@@ -50,6 +50,7 @@ namespace statistics
 
 namespace status
 {
-	bool gameFailed = false;
+	GameMode curMode = INFINITE;
+	GameStat curStatus = START;
 	float fps = 0.0f, tps = 0.0f;
 }

@@ -271,8 +271,9 @@ namespace render
             renderBackground(window);
             renderFPS(window);
 
-            if (!status::gameFailed)
+            switch (status::curStatus)
             {
+            case status::GameStat::IN_GAME:
                 renderCover(window);
                 renderLogo(window);
                 renderSand(window);
@@ -281,9 +282,11 @@ namespace render
                 renderColorHint(window);
                 renderScore(window);
                 renderFailLine(window);
-            }
-            else
+                break;
+            case status::GameStat::FAILED:
                 renderFailScreen(window);
+                break;
+            }
 
             window->display();
 
