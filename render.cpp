@@ -15,13 +15,14 @@
 namespace render
 {
     // @brief 渲染器基类，无实际功能
+    // @warning 子类必须实现 void render(sf::RenderWindow* window)
     class Renderer
     {
     protected:
         sf::IntRect getTextureRect(sf::Sprite& s, int y)
         {
             int top = std::max(-y, 0);
-            int bottom = std::min(-y + (int)layout::color.getSize().y, (int)s.getTexture()->getSize().y);
+            int bottom = std::min(-y + (int)layout::inGame::color.getSize().y, (int)s.getTexture()->getSize().y);
             if (top >= bottom)
                 return sf::IntRect(0, 0, 0, 0);
             return sf::IntRect(
@@ -57,7 +58,84 @@ namespace render
         }
 
     public:
-        virtual void render(sf::RenderWindow* window) {} // 子类自行实现
+        // @brief 在给定窗口上进行渲染
+        // @note 子类自行实现
+        virtual void render(sf::RenderWindow* window) {}
+    };
+
+    // @brief 用于渲染标题界面
+    class StartRenderer : public Renderer
+    {
+        sf::Sprite scaledLogo;
+        sf::Text optionMark;
+        std::vector<sf::Text> modeTexts;
+
+        void renderTitle(sf::RenderWindow* window)
+        {
+            window->draw(scaledLogo);
+        }
+
+        void renderModeOptions(sf::RenderWindow* window)
+        {
+            for (int i = 0; i < modeTexts.size(); i++)
+            {
+                //float x = i == status::curMode ? optionMark.getGlobalBounds().getSize().x / 2 : 0;
+                float x = 0;
+                float y = i * modeTexts[0].getLocalBounds().getSize().y * 2.5f;
+                if (i == status::curMode)
+                {
+                    const float markWidth = optionMark.getGlobalBounds().getSize().x;
+                    x = markWidth * 1.5f / 2;
+                    optionMark.setPosition(layout::start::mode.getAbsPos({ x - markWidth * 1.5f, y }));
+                    window->draw(optionMark);
+                }
+                modeTexts[i].setPosition(layout::start::mode.getAbsPos({ x, y }));
+                window->draw(modeTexts[i]);
+            }
+        }
+
+        void renderHighScore(sf::RenderWindow* window)
+        {
+            using boost::format;
+
+            std::string score = (format("HIGH: %08d") % statistics::highScore[status::curMode]).str();
+            sf::Text text(score, source::renderFont, 50U);
+            text.setFillColor(sf::Color::Black);
+            text.move(layout::start::score.getAbsPos({ 0,0 }));
+            window->draw(text);
+        }
+
+    public:
+        StartRenderer()
+        {
+            scaledLogo = source::logo;
+            scaledLogo.setScale({
+                layout::start::title.getSize().x / (float)source::logo.getTexture()->getSize().x,
+                layout::start::title.getSize().y / (float)source::logo.getTexture()->getSize().y
+                });
+            scaledLogo.setPosition(layout::start::title.getAbsPos({ 0,0 }));
+
+            optionMark = sf::Text(">", source::renderFont, 50U);
+            optionMark.setFillColor(sf::Color::Black);
+
+            for (auto op : { "INFINITE", "SPEEDRUN", "SURVIVAL" })
+            {
+                sf::Text tmp = sf::Text(op, source::renderFont, 50U);
+                tmp.setFillColor(sf::Color::Black);
+                auto tmp2 = tmp.getGlobalBounds().getSize();
+                modeTexts.push_back(tmp);
+            }
+        }
+
+        void render(sf::RenderWindow* window)
+        {
+            renderBackground(window);
+            renderFPS(window);
+
+            renderTitle(window);
+            renderModeOptions(window);
+            renderHighScore(window);
+        }
     };
 
     // @brief 用于在游戏时进行渲染
@@ -83,7 +161,7 @@ namespace render
                 for (int j = 0; j < curShape.h; j++)
                     if (curShape.data[i][j])
                     {
-                        s.setPosition(layout::sand.getAbsPos({ (float)ghostX + blockSize * i, (float)blockSize * j }));
+                        s.setPosition(layout::inGame::sand.getAbsPos({ (float)ghostX + blockSize * i, (float)blockSize * j }));
                         window->draw(s);
                     }
         }
@@ -95,7 +173,7 @@ namespace render
                 for (int j = 0; j < sand::sandListH; j++)
                 {
                     sf::RectangleShape shape = sand::sands[i][j]->renderShape;
-                    const sf::Vector2f pos = layout::sand.getAbsPos({ (float)i * render::sandSize , (float)j * render::sandSize });
+                    const sf::Vector2f pos = layout::inGame::sand.getAbsPos({ (float)i * render::sandSize , (float)j * render::sandSize });
                     shape.setPosition(pos);
                     window->draw(shape);
                 }
@@ -103,7 +181,7 @@ namespace render
 
         void renderLogo(sf::RenderWindow* window)
         {
-            const sf::Vector2f pos = layout::info.getAbsPos({ 0,0 });
+            const sf::Vector2f pos = layout::inGame::info.getAbsPos({ 0,0 });
             source::logo.setPosition(pos);
             window->draw(source::logo);
         }
@@ -130,9 +208,9 @@ namespace render
 
                 auto getY = [](float y) { return y < 0 ? 0 : y; };
 
-                prev.setPosition(layout::color.getAbsPos({ 0, getY(hintY) }));
-                cur.setPosition(layout::color.getAbsPos({ 0, getY(hintY + 108) }));
-                next.setPosition(layout::color.getAbsPos({ 0, getY(hintY + 108 + 108) }));
+                prev.setPosition(layout::inGame::color.getAbsPos({ 0, getY(hintY) }));
+                cur.setPosition(layout::inGame::color.getAbsPos({ 0, getY(hintY + 108) }));
+                next.setPosition(layout::inGame::color.getAbsPos({ 0, getY(hintY + 108 + 108) }));
 
                 window->draw(next);
                 window->draw(cur);
@@ -145,8 +223,8 @@ namespace render
                 cur.setTextureRect(sf::IntRect(0, 20, cur.getTexture()->getSize().x, cur.getTexture()->getSize().y - 20));
                 next.setTextureRect(sf::IntRect(0, 0, next.getTexture()->getSize().x, 20));
 
-                cur.setPosition(layout::color.getAbsPos({ 0, 0 }));
-                next.setPosition(layout::color.getAbsPos({ 0, 88 }));
+                cur.setPosition(layout::inGame::color.getAbsPos({ 0, 0 }));
+                next.setPosition(layout::inGame::color.getAbsPos({ 0, 88 }));
 
                 window->draw(next);
                 window->draw(cur);
@@ -158,8 +236,8 @@ namespace render
             shape::Shape& curShape = placement::curShape;
             const int w = curShape.w * render::hintBlockSize;
             const int h = curShape.h * render::hintBlockSize;
-            const float x = layout::shape.getSize().x / 2 - w / 2.0f;
-            const float y = layout::shape.getSize().y / 2 - h / 2.0f;
+            const float x = layout::inGame::shape.getSize().x / 2 - w / 2.0f;
+            const float y = layout::inGame::shape.getSize().y / 2 - h / 2.0f;
 
             auto s = sf::RectangleShape({ render::hintBlockSize, render::hintBlockSize });
             s.setFillColor(sf::Color(0xFFFFFFFF));
@@ -168,7 +246,7 @@ namespace render
                     if (curShape.data[i][j])
                     {
                         s.setPosition(
-                            layout::shape.getAbsPos({
+                            layout::inGame::shape.getAbsPos({
                                 x + i * render::hintBlockSize,
                                 y + j * render::hintBlockSize
                                 })
@@ -179,9 +257,9 @@ namespace render
 
         void renderFailLine(sf::RenderWindow* window)
         {
-            sf::RectangleShape line({ layout::sand.getSize().x, render::sandSize });
+            sf::RectangleShape line({ layout::inGame::sand.getSize().x, render::sandSize });
             line.setFillColor(sf::Color(0xBB0000FF));
-            line.setPosition(layout::sand.getAbsPos({ 0.0f, (float)sand::failLine * render::sandSize }));
+            line.setPosition(layout::inGame::sand.getAbsPos({ 0.0f, (float)sand::failLine * render::sandSize }));
             window->draw(line);
         }
 
@@ -194,10 +272,10 @@ namespace render
             text.setCharacterSize(40);
             text.setFillColor(sf::Color::Black);
 
-            text.setString((format("%08d") % statistics::highScore).str());
-            const float textX = layout::info.getSize().x - text.getLocalBounds().width - 5;
-            const float textY = layout::info.getSize().y / 2 - text.getLocalBounds().height - 6;
-            sf::Vector2f pos = layout::info.getAbsPos({ textX, textY });
+            text.setString((format("%08d") % statistics::highScore[status::curMode]).str());
+            const float textX = layout::inGame::info.getSize().x - text.getLocalBounds().width - 5;
+            const float textY = layout::inGame::info.getSize().y / 2 - text.getLocalBounds().height - 6;
+            sf::Vector2f pos = layout::inGame::info.getAbsPos({ textX, textY });
             text.setPosition(pos);
             window->draw(text);
             pos.y += text.getLocalBounds().height + 8;
@@ -254,7 +332,7 @@ namespace render
             window->draw(score);
 
             sf::Text highScore(
-                (format("HIGH:  %08d") % statistics::highScore).str(),
+                (format("HIGH:  %08d") % statistics::highScore[status::curMode]).str(),
                 source::renderFont,
                 40U
             );
@@ -263,7 +341,7 @@ namespace render
             highScore.setPosition(x, y + highScore.getLocalBounds().height + 10);
             window->draw(highScore);
 
-            if (statistics::score == statistics::highScore)
+            if (statistics::score == statistics::highScore[status::curMode])
             {
                 sf::Text newRecord("New Record!", source::renderFont, 40);
                 newRecord.setFillColor(sf::Color::Black);
@@ -297,11 +375,14 @@ namespace render
 
     static Renderer& chooseRenderer(status::GameStat stat)
     {
+        static StartRenderer start;
         static InGameRenderer inGame;
         static FailRenderer fail;
 
         switch (stat)
         {
+        case status::START:
+            return start;
         case status::IN_GAME:
             return inGame;
         case status::FAILED:

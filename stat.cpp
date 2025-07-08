@@ -6,7 +6,8 @@
 
 namespace statistics
 {
-	unsigned int score=0, highScore=0;
+	unsigned int score=0;
+	unsigned int highScore[3];
 
 	void loadHighScore()
 	{
@@ -14,12 +15,13 @@ namespace statistics
 		try
 		{
 			file.open("./score.txt");
-			file >> highScore;
+			for (int i = 0; i < 3; i++)
+				file >> highScore[i];
 			file.close();
 		}
 		catch (std::exception& e)
 		{
-			highScore = 0;
+			std::fill(highScore, highScore + 3, 0);
 			std::cerr << "Cannot load highscore: " << e.what() << '\n';
 		}
 	}
@@ -27,8 +29,8 @@ namespace statistics
 	void updateScore(unsigned int delta)
 	{
 		score += delta;
-		if (score > highScore)
-			highScore = score;
+		if (score > highScore[status::curMode])
+			highScore[status::curMode] = score;
 	}
 
 	void saveHighScore()
@@ -37,7 +39,8 @@ namespace statistics
 		try
 		{
 			file.open("./score.txt");
-			file << highScore;
+			for (int i = 0; i < 3; i++)
+				file << highScore[i] << "\n";
 			file.close();
 		}
 		catch (std::exception& e)

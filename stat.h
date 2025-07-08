@@ -2,7 +2,8 @@
 
 namespace statistics
 {
-    extern unsigned int score, highScore;
+	extern unsigned int score;
+	extern unsigned int highScore[3];
 
     void loadHighScore();
     void updateScore(unsigned int delta);

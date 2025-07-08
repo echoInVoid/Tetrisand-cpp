@@ -28,10 +28,10 @@ namespace placement
         const int ghostW = curShape.w * blockSize;
 
         int ghostX = sf::Mouse().getPosition(*window).x;
-        ghostX = (int)round(layout::sand.getRelPos({ (float)ghostX, 0.0 }).x);
+        ghostX = (int)round(layout::inGame::sand.getRelPos({ (float)ghostX, 0.0 }).x);
         ghostX -= ghostW / 2;
         ghostX = std::max(ghostX, 0);
-        ghostX = std::min(ghostX, (int)round(layout::sand.getSize().x) - ghostW + 1);
+        ghostX = std::min(ghostX, (int)round(layout::inGame::sand.getSize().x) - ghostW + 1);
         ghostX -= ghostX % render::sandSize;
 
         return ghostX / render::sandSize;

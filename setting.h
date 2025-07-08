@@ -14,8 +14,8 @@ namespace render
 
 namespace sand
 {
-    const int sandListW = (int)round(layout::sand.getSize().x / render::sandSize);
-    const int sandListH = (int)round(layout::sand.getSize().y / render::sandSize);
+    const int sandListW = (int)round(layout::inGame::sand.getSize().x / render::sandSize);
+    const int sandListH = (int)round(layout::inGame::sand.getSize().y / render::sandSize);
     const int failLine = sandListH * 0.1;
 }
 

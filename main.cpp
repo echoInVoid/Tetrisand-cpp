@@ -20,7 +20,7 @@ int main()
 
     statistics::loadHighScore();
     sand::initSandData();
-    status::curStatus = status::IN_GAME;
+    status::curStatus = status::START;
 
     sf::Thread renderThread(render::renderThread, &window);
     renderThread.launch();
@@ -39,20 +39,29 @@ int main()
                 window.close();
                 break;
             case sf::Event::KeyPressed:
-                if (status::curStatus == status::IN_GAME)
+                if (status::curStatus == status::START)
+                {
+                    if (event.key.code == sf::Keyboard::W)
+                        status::curMode = (status::GameMode)std::max(0, status::curMode - 1);
+                    else if (event.key.code == sf::Keyboard::S)
+                        status::curMode = (status::GameMode)std::min((int)status::SURVIVAL, status::curMode + 1);
+                    else if (event.key.code == sf::Keyboard::Enter)
+                        status::curStatus = status::IN_GAME;
+                }
+                else if (status::curStatus == status::IN_GAME)
                 {
                     if (event.key.code == sf::Keyboard::Left)
                         placement::curShape.leftRotate();
                     else if (event.key.code == sf::Keyboard::Right)
                         placement::curShape.rightRotate();
                 }
-                else
+                else if (status::curStatus == status::FAILED)
                 {
                     sand::reset();
                     statistics::saveHighScore();
                     statistics::score = 0;
                     source::refreshHints();
-                    status::curStatus = status::IN_GAME;
+                    status::curStatus = status::START;
                 }
                 break;
             case sf::Event::MouseButtonPressed:
