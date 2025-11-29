@@ -54,6 +54,14 @@ int main()
                         placement::curShape.leftRotate();
                     else if (event.key.code == sf::Keyboard::Right)
                         placement::curShape.rightRotate();
+                    else if (event.key.code == sf::Keyboard::Escape)
+                    {
+                        sand::reset();
+                        statistics::saveHighScore();
+                        statistics::score = 0;
+                        source::refreshHints();
+                        status::curStatus = status::START;
+                    }
                 }
                 else if (status::curStatus == status::FAILED)
                 {
